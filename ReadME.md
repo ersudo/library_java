@@ -31,3 +31,29 @@ description
   검색 완료후 검색되어진 단어의 뜻과 내용을 정렬하고 나열하여 사용자에게 표시 -o 옵션 (option) 사용자에게 보여지는 창의 불투명도 조절 기능을 추가한다) 
   
   
+-----------------------------------------------------------------------------------------------------------
+
+1.if you don't know the meaning of a word while reading an article or a paper while browsing a web page, 
+  - you can find and show the meaning of the word (specifically, right-  click) when you put your mouse on the word.
+2.Record the words found. (Note that the default format of the record is marked by date -> time / time display by hh:mm (pm/am -location).
+  - Storage days up to 2 weeks (stored within 7 to 14 days)
+3. The recorded words are organized by date (default) or listed in a-z order as an optional option (default implementation / selection).
+
+*Basic implementation forms are as above. The following contents are implemented using a server, so it will be implemented after the server is deployed.
+
+4. Create an account and log in (Use Service Online - Default is Local Login). ) -> Save saved data to (web data) server
+5. Categorize stored data -> Categorize based on user-set information (based on age 1) identification (occupation) 2) interest field 3) selected by user when creating an account)
+- Specific goals of implementation are ex_) Suppose you want to search a particular medical field.) -> 1) I am curious about the information related to the heart and 2) The person who searched for it is interested in the medical field (job)
+- Based on the information, list the upper words based on the frequency of the words searched in relation to the heart.
+6. Select the area you want to search ->Find/Show Terms
+
+
+* This form will be implemented after the server is created.
+- To be added on specific details
+- 
+-----------------------------------------------------------------------------------------------------------
+Specific functions?
+
+- When the mouse is raised, -> is installed in Chrome -extension and set to on/off (select the user whether to use the function or not)
+- Search for 1~2 seconds (Search execution links Naver dictionary or the following dictionary -> Basic translation is English -> Hangul/Other words are implemented additionally)
+Align and list the meaning and content of the words searched after completion of the search -o option (add the opacity adjustment of the window shown to the user)
