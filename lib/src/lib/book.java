@@ -2,27 +2,27 @@ package lib;
 import java.io.*;
 import java.util.*;
 
-abstract class book_info{ //책에 대한 추상 클래스 
-	protected String ISBN; //고유 번호  
-	protected String subject; // 책 주제
-	protected String language; // 언어 
-	protected String publisher; // 저자 
-	protected String publication_date;//출판일
-	public book_info() {
-		this.ISBN = " ";
+abstract class book_info{ //책에 대한 추상 클래스  *class about book (abstract)
+	protected String ISBN; //고유 번호 * book isbn
+	protected String subject; // 책 주제 * book title->subject
+	protected String language; // 언어 * book language ->language
+	protected String publisher; // 저자 * book author ->publisher
+	protected String publication_date;//출판일 * book publication date 
+	public book_info() { //default setting book info
+		this.ISBN = " "; 
 		this.subject = " ";
 		this.language = " ";
 		this.publisher = " "; 
 		this.publication_date =" ";
 	}
-	public book_info(String ISBN, String subject,String language, String publisher,String publication_date) {
+	public book_info(String ISBN, String subject,String language, String publisher,String publication_date) { //set book info
 		this.ISBN = ISBN;
 		this.subject = subject;
 		this.language = language;
 		this.publisher =publisher; 
 		this.publication_date =publication_date;
 	}
-	/*------------------get 함수 ------------*/
+	/*------------------get 함수 ------------*/  //get function 
 	public String get_ISBN() {
 		return ISBN;
 	}
@@ -38,7 +38,7 @@ abstract class book_info{ //책에 대한 추상 클래스
 	public String get_publication_date() {
 		return publication_date;
 	}
-	/*------------------set 함수 ------------*/
+	/*------------------set 함수 ------------*/ //set function
 	public void set_ISBN(String ISBN) {
 		this.ISBN = ISBN;
 	}
