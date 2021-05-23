@@ -1,6 +1,6 @@
 package lib;
 
-public class users extends Person {
+public class users extends Person { 
 	protected String userID;// 아이디 
 	protected String userPW;// 비밀번호 	
 	protected String history; // 대출 예약 기록 
