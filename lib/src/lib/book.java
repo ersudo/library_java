@@ -7,36 +7,36 @@ abstract class book_info{ //책에 대한 추상 클래스  *class about book (a
 	protected String subject; // 책 주제 * book title->subject
 	protected String language; // 언어 * book language ->language
 	protected String publisher; // 저자 * book author ->publisher
-	protected String publication_date;//출판일 * book publication date 
+	protected String publicationdate;//출판일 * book publication date 
 	public book_info() { //default setting book info
 		this.ISBN = " "; 
 		this.subject = " ";
 		this.language = " ";
 		this.publisher = " "; 
-		this.publication_date =" ";
+		this.publicationdate =" ";
 	}
-	public book_info(String ISBN, String subject,String language, String publisher,String publication_date) { //set book info
+	public book_info(String ISBN, String subject,String language, String publisher,String publicationdate) { //set book info
 		this.ISBN = ISBN;
 		this.subject = subject;
 		this.language = language;
 		this.publisher =publisher; 
-		this.publication_date =publication_date;
+		this.publicationdate =publicationdate;
 	}
 	/*------------------get 함수 ------------*/  //get function 
-	public String get_ISBN() {
+	public String getISBN() {
 		return ISBN;
 	}
-	public String get_subject() {
+	public String getSubject() {
 		return subject;
 	}
-	public String get_language() {
+	public String getLanguage() {
 		return language;
 	}
-	public String get_publisher() {
+	public String getPublisher() {
 		return publisher;
 	}
-	public String get_publication_date() {
-		return publication_date;
+	public String getPublicationdate() {
+		return publicationdate;
 	}
 	/*------------------set 함수 ------------*/ //set function
 	public void set_ISBN(String ISBN) {
@@ -51,8 +51,8 @@ abstract class book_info{ //책에 대한 추상 클래스  *class about book (a
 	public void set_publisher(String publisher) {
 		this.publisher = publisher;
 	}
-	public void set_publication_date(String publication_date) {
-		this.publication_date =publication_date;
+	public void set_publication_date(String publicationdate) {
+		this.publicationdate =publicationdate;
 	}
 	
 	
@@ -62,42 +62,43 @@ abstract class book_info{ //책에 대한 추상 클래스  *class about book (a
 		System.out.println("책 주제:"+ subject);
 		System.out.println("책 언어:" + language);
 		System.out.println("책 저자: "+ publisher);
-		System.out.println("책 출판일: "+ publication_date);
+		System.out.println("책 출판일: "+ publicationdate);
 	}
 }
-class book extends book_info{ //책에 대한 정보 (책의 서브 클래스)
+public class book extends book_info{ //책에 대한 정보 (책의 서브 클래스)
 	protected String tag;// 책 태그 
 	protected String title;//책 타이틀
-	protected String page_number;// 페이지 수 
-	protected String book_type ;//책의 형태
-	protected boolean borrowed;//대출 여부 대출 가능 =true 대출 가능 = false 책에 대한 대출 불가 
-	protected String borrowed_person;// 대출한 사람에 대한 정보
-	protected String due_date;//반납 기간
+	protected String pagenumber;// 페이지 수 
+	protected String booktype ;//책의 형태
+	protected boolean borrow;//대출 여부 대출 가능 =true 대출 가능 = false 책에 대한 대출 불가 
+	protected String person;// 대출한 사람에 대한 정보
+	protected String duedate;//반납 기간
 	protected String renew;//대출 연장 
 
 	public book() {
 		super();
 		this.tag =" ";
 		this.title = " ";
-		this.page_number = " ";
-		this.book_type = " ";
-		this.borrowed_person = "없음";
-		this.borrowed = true; 
-		this.due_date =  "대출 일로부터 7일 ";
+		this.pagenumber = " ";
+		this.booktype = " ";
+		this.borrow = true; 
+		this.person =" ";
+		this.duedate =  "대출 일로부터 7일 ";
 		this.renew ="연락 후 연장";
 		
 	}
-	public book(String ISBN, String subject,String language, String publisher,String publication_date,
-			String tag,String title,String page_number,String book_type,boolean borrowed,String borrowed_person,String due_date,String renew) {
-		super(ISBN,subject,language,publisher,publication_date);
+	public book(String ISBN, String subject,String language, String publisher,String publicationdate,
+			String tag,String title,String pagenumber,String booktype,boolean borrow,String person,String duedate,String renew) {
+		super(ISBN,subject,language,publisher,publicationdate);
 		this.tag =tag;
 		this.title = title;
-		this.page_number = page_number;
-		this.book_type =book_type;
-		this.borrowed =borrowed;
-		this.borrowed_person = "없음";
-		this.due_date = due_date;
-		this.renew =renew;
+		this.pagenumber = pagenumber;
+		this.booktype = booktype;
+		this.borrow = borrow;
+		this.person = person;
+		this.duedate = duedate;
+		this.renew = renew;
+		
 		
 	}
 	/*
@@ -107,59 +108,62 @@ class book extends book_info{ //책에 대한 정보 (책의 서브 클래스)
 	*/
 	public void show_borrowedinformation() {
 		System.out.println("책 제목: "+ title );
-		System.out.println("책 형태: "+ book_type);
-		System.out.println("빌려간 사람: "+borrowed_person);
-		System.out.println("대출 반납기간: "+due_date);
+		System.out.println("책 형태: "+ booktype);
+		System.out.println("빌려간 사람: "+person);
+		System.out.println("대출 반납기간: "+duedate);
 		System.out.println("대출 연장:"+renew);
 	}
 	public void show_bookinformation() {
 		super.show_bookinformation();
 		System.out.println("책 테그: "+ tag);
-		System.out.println("책 페이지수: "+ page_number );
+		System.out.println("책 페이지수: "+ pagenumber );
 		System.out.println("책 제목: "+ title );
-		System.out.println("책 형태: "+ book_type);
-		if(borrowed == true)
+		System.out.println("책 형태: "+ booktype);
+		if(borrow == true)
 			System.out.println("대출가능 : 대출 가능");
 		else 
 		{	
 			System.out.println("대출가능 : 대출 불가");
-			System.out.println("빌려간 사람: "+borrowed_person);
+			System.out.println("빌려간 사람: "+person);
 			
 		}
-		System.out.println("대출 반납기간: "+due_date);
+		System.out.println("대출 반납기간: "+duedate);
 		System.out.println("대출 연장:"+renew);
 	}
 	
 	/*---------------get method 정의 -------------*/
 	
-	public boolean get_borrowed_state() { //대출 여부
-		return borrowed;
+	public boolean getBorrow() { //대출 여부
+		return borrow;
 	}
-	public String get_tag() {
+	public String getTag() {
 		return tag;
 	}
-	public String get_title() {
+	public String getTitle() {
 		return title;
 	}
-	public String get_pagenumber() {
-		return page_number;
+	public String getPagenumber() {
+		return pagenumber;
 	}
-	public String get_booktype() {
-		return book_type;
+	public String getPerson() {
+		return person;
 	}
-	public String get_duedate() {
-		return due_date;
+	public String getBooktype() {
+		return booktype;
 	}
-	public String get_renew() {
+	public String getDuedate() {
+		return duedate;
+	}
+	public String getRenew() {
 		return renew;
 	}
 	/*---------------set method 정의 -------------*/
 	public void set_borrowed_state(String check) { //대출 여부 ->boolean
 		if(check == "o") { //가능하면
-			this.borrowed =true;
+			this.borrow =true;
 		}
 		if(check =="x") { //대출 불가이면
-			this.borrowed =false;
+			this.borrow =false;
 		}
 	}
 	public void set_tag(String tag) {
@@ -168,14 +172,14 @@ class book extends book_info{ //책에 대한 정보 (책의 서브 클래스)
 	public void set_title(String title) {
 		this.title =title;
 	}
-	public void set_pagenumber(String page_number) {
-		this.page_number = page_number;
+	public void set_pagenumber(String pagenumber) {
+		this.pagenumber = pagenumber;
 	}
-	public void set_booktype(String book_type) {
-		this.book_type =book_type;
+	public void set_booktype(String booktype) {
+		this.booktype =booktype;
 	}
-	public void set_duedate(String due_Date) {
-		this.due_date = due_Date; 
+	public void set_duedate(String duedate) {
+		this.duedate = duedate; 
 	}
 	public void set_renew(String renew) {
 		this.renew = renew;

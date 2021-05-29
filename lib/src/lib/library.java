@@ -2,14 +2,19 @@ package lib;
 import java.util.*;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.stream.Stream;
+
+import com.opencsv.CSVWriter;
 public class library {
 	private String library_name;// 도서관 이름
 	private String library_call_number; // 도서관 연락처
 	private String library_address;//도서관 주소
 	private String work_day;// 일하는 날 
 	private String holiday;//쉬는 날 
-	private ArrayList <book> bookDB;//책에 대한 db 생성
-	private ArrayList <Person> personDB;//개인 정보 db 생성
+	protected ArrayList <book> bookDB;//책에 대한 db 생성
+	protected ArrayList <Person> personDB;//개인 정보 db 생성
+	protected ArrayList <users> usersDB; // 개인 정보 저장
+	protected ArrayList <librarian> librarianDB; 
 	private librarian librarian; // 사서 객체 생성
 	
 	private static library obj;
@@ -56,10 +61,10 @@ public class library {
 		personDB.add(new_person);
 	}
 	public String get_usersID(users new_user) {
-		return new_user.get_userID();
+		return new_user.getUserID();
 	}
 	public String get_userPW(users new_user) {
-		return new_user.get_userPW();
+		return new_user.getUserPW();
 	}
 	/*--------------------구현 함수 -자리 관련 -----------------
 	public void seat_view() {
@@ -74,7 +79,7 @@ public class library {
 	}
 	*/
 	/*--------------------구현 함수 -user 데이터 관련 -----------------*/
-	public void set_userDB(ArrayList<users> user_) {
+	public void set_userDB(List<users> user_) {
 		Scanner in_data = new Scanner(System.in);
 		users user = new users();
 		System.out.print("회원님의 이름을 입력하세요:");
@@ -96,19 +101,19 @@ public class library {
 	/* ----------------책 대출과 관련된 함수 -------------------- */
 	
 	/*책 대출 함수 */
-	public void borrowed_book(ArrayList<book> book_,ArrayList<users> user_,String current_name) { 
+	public void borrowed_book(List<book> book_,List<users> user_,String current_name) { 
 		Scanner book_name = new Scanner(System.in);
 		String book_data;
 		System.out.print("대출 하고자 하는 책의 이름을 입력하세요: ");
 		book_data = book_name.nextLine(); //책 이름 입력
 		for(int j=0;j<book_.size();j++) { // 빌리고자 하는 책 제목이 목록안에 있는지 확인
-			if(book_data.equals(book_.get(j).title)&& book_.get(j).borrowed == true){ //대출이 가능한지 확인하다.
+			if(book_data.equals(book_.get(j).title)&& book_.get(j).borrow == true){ //대출이 가능한지 확인하다.
 				user_.get(j).history = "대출 중..";  
-				book_.get(j).borrowed = false;
-				book_.get(j).borrowed_person = current_name;
+				book_.get(j).borrow = false;
+				book_.get(j).person = current_name;
 				System.out.println("대출이 완료 되었습니다.");
 			}
-			else if(book_data.equals(book_.get(j).title) && book_.get(j).borrowed == false) { //대출 기록이 있다면
+			else if(book_data.equals(book_.get(j).title) && book_.get(j).borrow == false) { //대출 기록이 있다면
 				System.out.println("현재 대출중입니다");
 				break;
 			}
@@ -116,25 +121,25 @@ public class library {
 	} //책 대출 함수 
 	
 	//책 대출 정보 보기 
-	public void borrowed_person_information(ArrayList<book> book_,ArrayList<users> user_,String current_name) {
+	public void borrowed_person_information(List<book> book_,List<users> user_,String current_name) {
 		for(int j=0;j<book_.size();j++) { //빌린책이 있는지 목록에서 확인 
-			if(current_name.equals(book_.get(j).borrowed_person)) { // 책에서 빌린 사람 이름과 동일하면 
+			if(current_name.equals(book_.get(j).person)) { // 책에서 빌린 사람 이름과 동일하면 
 				book_.get(j).show_borrowedinformation(); // 대출한 책에 대한 정보만 보여주기
 			}
 		}
 	}	//책 대출 정보 함수
 	
 	//책 대출 정보 자세히 보기
-	public void borrowed_book_detail(ArrayList<book> book_,ArrayList<users> user_,String current_name) {
+	public void borrowed_book_detail(List<book> book_,List<users> user_,String current_name) {
 		for(int j=0;j<book_.size();j++) { //빌린책이 있는지 목록에서 확인 
-			if(current_name.equals(book_.get(j).borrowed_person)) { // 책에서 빌린 사람 이름과 동일하면 
+			if(current_name.equals(book_.get(j).person)) { // 책에서 빌린 사람 이름과 동일하면 
 				book_.get(j).show_bookinformation(); // 대출한 책에 대한 정보만 보여주기
 			}
 		}
 	}
 	
 	/* ----------------사서 관리와 관련된 함수 -------------------- */
-	public void set_librarianDB(ArrayList<librarian> librarian_) {
+	public void set_librarianDB(List<librarian> librarian_) {
 		Scanner in_data = new Scanner(System.in);
 		librarian lib_data = new librarian();
 		System.out.print("사서 이름을 입력하세요:");
@@ -154,7 +159,7 @@ public class library {
 		System.out.println("사서가 생성되었습니다.");
 	} 
 	/* ----------------책 관리와 관련된 함수 -------------------- */
-	public void set_bookDB(ArrayList<book> book_) {
+	public void set_bookDB(List<book> book_) {
 		Scanner in_data = new Scanner(System.in);
 		book book_data = new book();
 		System.out.print("ISBN을 입력하세요:");
@@ -191,4 +196,5 @@ public class library {
 		
 		
 	 * */
+	
 }

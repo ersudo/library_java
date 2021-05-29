@@ -1,21 +1,24 @@
 package lib;
 
 public class librarian extends Staff {
-	protected String work_place;
+	protected String workplace;
 	public librarian() {
 		super();
-		this.work_place = " ";
+		this.workplace = " ";
 	}
 	public librarian(String name,String email,String address,String phone,
-			String position,String work_place) {
+			String position,String workplace) {
 		super(name,email,address,phone,position);
-		this.work_place =work_place;
+		this.workplace =workplace;
 	}
-	public void set_work_place(String work_place) {
-		this.work_place = work_place;
+	public void set_work_place(String workplace) {
+		this.workplace = workplace;
+	}
+	public String getWorkplace() {
+		return this.workplace;
 	}
 	public void print_information() {
 		super.print_lib_information();
-		System.out.println("일하는 위치: "+ work_place);
+		System.out.println("일하는 위치: "+ workplace);
 	}
 }

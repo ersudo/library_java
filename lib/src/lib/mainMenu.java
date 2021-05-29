@@ -1,12 +1,21 @@
 package lib;
 import java.util.*;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import org.supercsv.cellprocessor.constraint.NotNull;
+import org.supercsv.cellprocessor.ift.CellProcessor;
+import org.supercsv.cellprocessor.*;
+import org.supercsv.cellprocessor.Optional;
+import org.supercsv.io.CsvBeanWriter;
+import org.supercsv.io.ICsvBeanWriter;
+import org.supercsv.prefs.CsvPreference;
 public class mainMenu {
 	 public static void clearmenu() { // 화면 지우기
 		 for (int i =0;i<20;i++) {
 			 System.out.println();
 		 }
 	 }	 
-	 
+	
 	 public static int takeInput(int min, int max) // 0 - max 까지
 	    {    
 	        String choice; //선택 입력 
@@ -26,29 +35,145 @@ public class mainMenu {
 	                System.out.println("\n잘못된 입력입니다.");
 	        }
 	    }
+	 /* ------------------ user data 를 csv 파일로 변경 -----------------------------*/
+	 public static void  writeCSVFileusers(String csvFileName, List<users> users_) {
+		    ICsvBeanWriter beanWriter = null;
+		    CellProcessor[] processors = new CellProcessor[] {
+		            new NotNull(), // name
+		            new NotNull(), // email
+		            new NotNull(), // address
+		            new NotNull(), // phone
+		            new NotNull(),// id
+		            new NotNull() // pw
+		    };
+		 
+		    try {
+		        beanWriter = new CsvBeanWriter(new FileWriter(csvFileName),
+		                CsvPreference.STANDARD_PREFERENCE);
+		        String[] header = {"name","email","address","phone","userID","userPW"};
+		        beanWriter.writeHeader(header);
+		 
+		        for (users user : users_) {
+		            beanWriter.write(user, header, processors);
+		        }
+		 
+		    } catch (IOException ex) {
+		        System.err.println("Error writing the CSV file: " + ex);
+		    } finally {
+		        if (beanWriter != null) {
+		            try {
+		                beanWriter.close();
+		            } catch (IOException ex) {
+		                System.err.println("Error closing the writer: " + ex);
+		            }
+		        }
+		    }
+	 }
+	 /*--------------------user db 를 csv 로 성공적으로 변환----------------*/
+	 
+	 /*--------------------book db 를 csv 로 변환 ----------------*/
+
+	 public static void  writeCSVFilebook(String csvFileName, List<book> book_) {
+		    ICsvBeanWriter beanWriter = null;
+		    CellProcessor[] processors = new CellProcessor[] {
+		    		new NotNull(), // ISBN
+		            new NotNull(), // subject
+		            new NotNull(), // language
+		            new NotNull(), // publisher
+		            new NotNull(), // pbulication_date
+		            new NotNull(),// tag
+		            new NotNull(), // title
+		            new NotNull(), //page_number
+		            new NotNull(), //book_type
+		            new Optional(new FmtBool("Y", "N")), //borrowed
+		            new NotNull(), //borrowed_person
+		            new NotNull(), //due_date
+		            new NotNull() // renew
+		    };
+		 
+		    try {
+		        beanWriter = new CsvBeanWriter(new FileWriter(csvFileName),
+		                CsvPreference.STANDARD_PREFERENCE);
+		          String[] header = {"ISBN","subject","language","publisher","publicationdate","tag","title","pagenumber","booktype","borrow","person","duedate","renew"};
+		        beanWriter.writeHeader(header);
+		 
+		        for (book books : book_) {
+		            beanWriter.write(books, header, processors);
+		        }
+		 
+		    } catch (IOException ex) {
+		        System.err.println("Error writing the CSV file: " + ex);
+		    } finally {
+		        if (beanWriter != null) {
+		            try {
+		                beanWriter.close();
+		            } catch (IOException ex) {
+		                System.err.println("Error closing the writer: " + ex);
+		            }
+		        }
+		    }
+	 }
+	 
+	 /*------------------------book db를 csv 파일로 성공적으로 변환 -----------------------------*/
+	 /*
+	  * String name,String email,String address,String phone,
+			String position,String workplace
+	  * */
+	 /*--------------------librarian db 를 csv 로 변환 ----------------*/
+	 public static void  writeCSVFilelibrarian(String csvFileName, List<librarian> librarian_) {
+		    ICsvBeanWriter beanWriter = null;
+		    CellProcessor[] processors = new CellProcessor[] {
+		    		new NotNull(), // name
+		            new NotNull(), // email
+		            new NotNull(), // address
+		            new NotNull(), // phone
+		            new NotNull(), // position
+		            new NotNull() // workplace
+		    };
+		 
+		    try {
+		        beanWriter = new CsvBeanWriter(new FileWriter(csvFileName),
+		                CsvPreference.STANDARD_PREFERENCE);
+		          String[] header = {"name","email","address","phone","position","workplace"};
+		        beanWriter.writeHeader(header);
+		 
+		        for (librarian librarians : librarian_) {
+		            beanWriter.write(librarians, header, processors);
+		        }
+		 
+		    } catch (IOException ex) {
+		        System.err.println("Error writing the CSV file: " + ex);
+		    } finally {
+		        if (beanWriter != null) {
+		            try {
+		                beanWriter.close();
+		            } catch (IOException ex) {
+		                System.err.println("Error closing the writer: " + ex);
+		            }
+		        }
+		    }
+	 }
+	 /*------------------------librarian db를 csv 파일로 성공적으로 변환 -----------------------------*/
+	 
 	 public static void main(String[] args) {
 		 Scanner person = new Scanner(System.in);
 		 Scanner press_button = new Scanner(System.in);
 		 Scanner book_m = new Scanner(System.in);
 		 library lib = library.getInstance();
-		 
 		 /*--------------user_db 생성 기본 정보 저장 --------------*/
-		 ArrayList<users> user_db = new ArrayList<users>();
-		 user_db.add(new users("김철수","chulsu@naver.com","신평동 70","541-54xx","kim","kim1234"));	
-		 user_db.add(new users("손나은","sonny@naver.com","신평동 60","531-53xx","sonny","sonny123"));
-		 user_db.add(new users("김정철","jungchurch@naver.com","신평동 50","501-50xx","church","church"));
-		 user_db.add(new users("정남구","jungman@naver.com","옥계동 40","401-50xx","jung","jung99"));
-		 user_db.add(new users("김남길","namgill@naver.com","옥계동 15","301-57xx","namgill","namgi"));
-		 user_db.add(new users("이민수","minsu@naver.com","옥계동 20","317-47xx","minsu","minsu77"));
+		
+		 //ArrayList<users> user_db = new ArrayList<users>();
+		 users user_db_1 = new users("kim_chul_su","chulsu@naver.com","Sinbi-ro 70","541-54xx","kim","kim1234");	
+		 users user_db_2 = new users("son_naeun","sonny@naver.com","Sinbi-ro 60","531-53xx","sonny","sonny123");
+		 users user_db_3 =new users("kim_jungchul","jungchurch@naver.com","Sinbi-ro 50","501-50xx","church","church");
+		 users user_db_4 = new users("Jeong_namgu","jungman@naver.com","Gumijungang-ro 40","401-50xx","jung","jung99");
+		 users user_db_5 = new users("kim_namgil","namgill@naver.com","Gumijungang-ro 15","301-57xx","namgill","namgi");
+		 users user_db_6 = new users("lee_minsu","minsu@naver.com","Gumijungang-ro 20","317-47xx","minsu","minsu77");
 		 
+		 List<users> userdb_data =new ArrayList<>(Arrays.asList(user_db_1,user_db_2,user_db_3,user_db_4,user_db_5,user_db_6));
+		 String csvFileNameuserDB = "user_db.csv";
+		 writeCSVFileusers(csvFileNameuserDB,userdb_data);
 		 /*------------user_db 에 대한 account 계정 생성 -------------*/
-		 
-		 /*
-		 ArrayList<account> account_db = new ArrayList<account>();
-		 for(int i=0; i<user_db.size();i++) {
-			 account_db.add(new account());
-		 } 
-		 */
 		 
 		 /*-------------book_db 생성 기본 정보 저장 ---------------------*/
 		 /*
@@ -59,12 +184,17 @@ public class mainMenu {
 			ISBN,주제,언어,저자, 발행일 ,분류,제목,페이지수 ,책 형태, 대출여부,대출기간,대출연장
 		  * */ 
 		 
-		 ArrayList<book> book_db = new ArrayList<book>();
-		 book_db.add(new book("978-89-34986-82-9","자연과학","한글","김영사","2021","컴퓨터 공학","데이터 과학자의 사고법","393p","인쇄물",true,"없음","대출 일로부터 7일 ","연락 후 연장"));
-		 book_db.add(new book("979-11-85415-42-0","과학","한글(번역)","소어 헨슨","2021","기초과학","벌의 사생활","402p","인쇄물",true,"없음","대출 일로부터 7일 ","연락 후 연장"));
-		 book_db.add(new book("978-89-86022-29-2","경제학","한글(번역)","스페파니 켈튼","2021","경제학","적자의 본질: 재정 적자의 이해하는 새로운 패러다임","415p","인쇄물",true,"없음","대출 일로부터 7일 ","연락 후 연장"));
-		 book_db.add(new book("978-89-54446-87-7","일반문학","한글","원태연","2021","인문/사회","손끝으로 원을 그려봐 네가 그릴 수 있는 한 크게 그걸 뺀만큼 널 사랑해","161p","인쇄물",true,"없음","대출 일로부터 7일 ","연락 후 연장"));
-		 book_db.add(new book("979-11-87289-73-9 ","일반문학","한글(번역)","와카스기 아키라","2019","인문/사회","시간 버리기 연습","247p","인쇄물",true,"없음","대출 일로부터 7일 ","연락 후 연장"));
+		 // ArrayList<book> book_db = new ArrayList<book>();
+		 book book_db_1 = new book("978-89-34986-82-9","natural science","korean","kimyoungcompnay","2021","computer science","The data scienctist's way of thinking","393p","printed matter",true,"None","Seven days from the date of the loan","Contact and extend");
+		 book book_db_2 = new book("978-89-34986-82-9","natural science","korean","kimyoungcompnay","2021","computer science","The data scienctist's way of thinking","393p","printed matter",true,"None","Seven days from the date of the loan","Contact and extend");
+		 book book_db_3 = new book("979-11-85415-42-0","science","korean(translate)","","2021","basic science","Buzz: the Nature and Necessity of Bees ","402p","printed matter",true,"None","Seven days from the date of the loan","Contact and extend");
+		 book book_db_4 = new book("978-89-86022-29-2","economics","korean(translate)","Kelton Stephanie","2021","economics","The Deficit Myth","415p","printed matter",true,"None","Seven days from the date of the loan ","Contact and extend");
+		 book book_db_5 = new book("978-89-54446-87-7","general literature","korean","one tae young","2021","Humanities/Sociality","Draw a circle with your fingertips, and I love you as much as you can without it.","161p","printed matter",true,"None","Seven days from the date of the loan","Contact and extend");
+		 book book_db_6 = new book("979-11-87289-73-9 ","general literature","korean(translate)","Akira Wakasugi","2019","Humanities/Sociality","Discard Time Exercise","247p","printed matter",true,"None","Seven days from the date of the loan","Contact and extend");
+		 
+		 List<book> bookdb_data = new ArrayList<> (Arrays.asList(book_db_1,book_db_2,book_db_3,book_db_4,book_db_5,book_db_6));
+		 String csvFileNamebookDB = "book_db.csv";
+		 writeCSVFilebook(csvFileNamebookDB,bookdb_data);
 		 
 		 /*------------ 사서 db 생성 및 기본 정보 저장 ------------------*/
 		 /*
@@ -72,18 +202,20 @@ public class mainMenu {
 			String position,String work_place
 			사서 이름,이메일,주소,핸드폰 번호,직책,일하는 부서 위치
 		  * */
-		 ArrayList<librarian> librarian_db = new ArrayList<librarian>();
-		 librarian_db.add(new librarian("김은경","eunkung@naver.com","구미시 금오시장 5","500-40xx","일반 직원","2층"));
-		 librarian_db.add(new librarian("정민서","mins@naver.com","구미시 공단 2동 15","300-40xx","일반 직원","2층"));
-		 librarian_db.add(new librarian("고정식","gojung@naver.com","구미시 공단 1동 15","200-40xx","일반 직원","1층"));
-		 librarian_db.add(new librarian("박지원","gigig@naver.com","구미시 옥계동 11","301-50xx","일반 직원","1층"));
-		 librarian_db.add(new librarian("김시진","zin@naver.com","구미시 신평동 27","601-50xx","일반 직원","3층"));
-		 librarian_db.add(new librarian("감사용","dragon@naver.com","구미시 신평동 36","614-50xx","일반 직원","3층"));
-		 
+		 //ArrayList<librarian> librarian_db = new ArrayList<librarian>();
+		 librarian librarian_db_1 = new librarian("kim_eunkung","eunkung@naver.com","gumi_maket 5","500-40xx","staff","second floor"); 
+		 librarian librarian_db_2 = new librarian("jung_mins","mins@naver.com","gumi_loadocean 15","300-40xx","staff","second floor");
+		 librarian librarian_db_3 = new librarian("go_changseek","gojung@naver.com","construct field road 15","200-40xx","staff","first floor");
+		 librarian librarian_db_4 = new librarian("park_jiwon","gigi@naver.com","oak building street 11","301-50xx","staff","first floor");
+		 librarian librarian_db_5 = new librarian("kim_zin","zin@naver.com","sin-pung 5street 27","601-50xx","staff","third floor");
+		 librarian librarian_db_6 = new librarian("thanks_dragon","dragon@naver.com","wallstreetbet 36","614-50xx","staff","third floor");
+		 List<librarian> librarain_data = new ArrayList<>(Arrays.asList(librarian_db_1,librarian_db_2,librarian_db_3,librarian_db_4,librarian_db_5,librarian_db_6));
+		 String csvFileNameLibrarianDB = "librarian_db.csv";
+		 writeCSVFilelibrarian(csvFileNameLibrarianDB,librarain_data);
 		 boolean stop = false;
 		 while(!stop) { // true 가 아닐때
 			clearmenu();//화면지우기
-			
+	
 			System.out.println("--------------------------------------------------------");
             System.out.println("\t "+lib.get_library_name()+"도서관에 오신것을 환영합니다.");
             System.out.println("--------------------------------------------------------");
@@ -105,15 +237,15 @@ public class mainMenu {
             	String userID = person.next();
             	System.out.print("로그인 비밀번호 : ");
             	String userPW = person.next();
-            		 for(int i=0;i<user_db.size();i++) { 
-            			 if( userID.equals(user_db.get(i).userID) &&
-            					 userPW.equals(user_db.get(i).userPW )){
-            				 String currnet_username = user_db.get(i).get_name();
+            		 for(int i=0;i<userdb_data.size();i++) { 
+            			 if( userID.equals(userdb_data.get(i).userID) &&
+            					 userPW.equals(userdb_data.get(i).userPW )){
+            				 String currnet_username = userdb_data.get(i).getName();
             				 while(true) {
             					 	clearmenu();//화면지우기
             					 	
             		            	System.out.println("--------------------------------------------------------");
-            		                System.out.println( currnet_username+"회원님 환영합니다");
+            		                System.out.println( currnet_username+" 회원님 환영합니다");
             		                System.out.println("--------------------------------------------------------");
             		                System.out.println("1. 책 검색 ");
             		                System.out.println("2. 책 전체 보기 ");
@@ -128,9 +260,9 @@ public class mainMenu {
             		                	System.out.print("검색할 제목을 입력하세요 : ");
             		                	String search = scan_list.nextLine();
             		                	//scan_list.close();
-            		                	for(int j=0;j<book_db.size();j++) {
-            		                		if(search.equals(book_db.get(j).title)) {
-            		                			book book_data = book_db.get(j);
+            		                	for(int j=0;j<bookdb_data.size();j++) {
+            		                		if(search.equals(bookdb_data.get(j).title)) {
+            		                			book book_data = bookdb_data.get(j);
 	            		                				while(true) {
 	            		                				System.out.println("\n\n");
 	            		                				book_data.show_bookinformation();
@@ -144,8 +276,8 @@ public class mainMenu {
             		                	       }
             		                   }
             		                	if(menu_choice == 2) { // 책 전체 목록 보기
-            		                		for(int j=0;j<book_db.size();j++) {
-            		                				book book_data = book_db.get(j);
+            		                		for(int j=0;j<bookdb_data.size();j++) {
+            		                				book book_data = bookdb_data.get(j);
             		                				System.out.println("\n-------------------------");
 	            		                			book_data.show_bookinformation();
             		                		}
@@ -157,7 +289,7 @@ public class mainMenu {
             		                		}
             		                	}
             		                	if(menu_choice == 3) { // 책 대출하기
-            		                		lib.borrowed_book(book_db, user_db, currnet_username); //도서관 책 빌리기
+            		                		lib.borrowed_book(bookdb_data, userdb_data, currnet_username); //도서관 책 빌리기
             		                		while(true) {
             		                		System.out.println("\n\n 1. 뒤로가기 ");
            		                			menu_choice =takeInput(0,2);
@@ -168,7 +300,7 @@ public class mainMenu {
             		                	if(menu_choice == 4) { //대출 기록 보기
             		                		//현재 계정정보는 가지고 잇으니 계정 정보를 바탕으로 기록 ?
             		                		System.out.println("-----회원님의 대출 목록 ------");
-            		                		lib.borrowed_person_information(book_db, user_db, currnet_username);
+            		                		lib.borrowed_person_information(bookdb_data, userdb_data, currnet_username);
                 		                		while(true) {
                 		                			System.out.println("\n1.책 정보 자세히 보기");
                     		                		System.out.println("2. 뒤로가기 \n");
@@ -176,7 +308,7 @@ public class mainMenu {
                    		                			if(menu_choice == 2)
                    		                					 break;
                 		                			if(menu_choice == 1) {
-                		                				lib.borrowed_book_detail(book_db, user_db, currnet_username);
+                		                				lib.borrowed_book_detail(bookdb_data, userdb_data, currnet_username);
                             		                		System.out.println("\n 1. 뒤로가기 ");
                            		                			menu_choice =takeInput(0,2);
                            		                			if(menu_choice == 1)
@@ -227,7 +359,7 @@ public class mainMenu {
                                  if(menu_choice == 4) //뒤로가기
                                 	 break;
                                  if(menu_choice == 1) { // 회원추가
-                                	lib.set_userDB(user_db); //회원추가 library에서 담당
+                                	lib.set_userDB(userdb_data); //회원추가 library에서 담당
                                 	System.out.println("\n\n 1. 뒤로가기 ");
    		                			menu_choice =takeInput(0,2);
    		                			if(menu_choice == 1)
@@ -236,9 +368,9 @@ public class mainMenu {
          		                if(menu_choice == 2) {//회원 삭제
 	                            		 System.out.println("삭제하고자 하는 회원의 이름을 입력하세요: ");
 	                            		 String delete_user = person.next();
-	                            		 for(int i=0;i<user_db.size();i++) { 
-	                            			 if(delete_user.equals(user_db.get(i).Person_name)){
-	                            				 user_db.remove(i); //유저에 대한 정보 삭제
+	                            		 for(int i=0;i<userdb_data.size();i++) { 
+	                            			 if(delete_user.equals(userdb_data.get(i).name)){
+	                            				 userdb_data.removeIf(e->e.equals(delete_user)); //유저에 대한 정보 삭제
 	                            				 System.out.println(delete_user+"(의) 유저 정보를 삭제합니다");
 	                            			 }
 	                            		 } //조건문 -> 회원 정보 찾기       	 
@@ -267,9 +399,9 @@ public class mainMenu {
                                         	System.out.println("\n---찾는 회원 이름을 입력하세요---- ");
                                          	System.out.print("회원 이름 : ");
                                          	String user_find = person.next();
-                                         	 for(int i=0;i<user_db.size();i++) { 
-                                    			 if(user_find.equals(user_db.get(i).Person_name)){
-                                    				 users user_data = user_db.get(i);
+                                         	 for(int i=0;i<userdb_data.size();i++) { 
+                                    			 if(user_find.equals(userdb_data.get(i).name)){
+                                    				 users user_data = userdb_data.get(i);
                                     				 user_data.print_information();
                                     			 }
                                          	 }
@@ -284,9 +416,9 @@ public class mainMenu {
                                             }
                                          // 회원찾기 if 문
                                          if(menu_choice == 2) { //전체 회원보기
-                                        	 for(int i=0;i<user_db.size();i++) { 
+                                        	 for(int i=0;i<userdb_data.size();i++) { 
                                         		 System.out.println("\n\n");
-                                        		 user_db.get(i).print_information();
+                                        		 userdb_data.get(i).print_information();
                                         	 }
                                         	 while(true) {
                  		                		System.out.println("\n 1. 뒤로가기 ");
@@ -319,7 +451,7 @@ public class mainMenu {
                                  if(menu_choice == 4) //뒤로가기
                                 	 break;
                                  if(menu_choice == 1) {//사서 추가
-          		                	 lib.set_librarianDB(librarian_db);
+          		                	 lib.set_librarianDB(librarain_data);
                                 	 System.out.println("\n\n 1. 뒤로가기 ");
     		                			menu_choice =takeInput(0,2);
     		                			if(menu_choice == 1)
@@ -328,10 +460,10 @@ public class mainMenu {
           		                if(menu_choice == 2) { //사서 삭제
           		                	 System.out.println("삭제하고자 하는 사서의 이름을 입력하세요: ");
                             		 String delete_lib = person.next();
-                            		 for(int i=0;i<librarian_db.size();i++) { 
-                            			 if(delete_lib.equals(librarian_db.get(i).Person_name)){
+                            		 for(int i=0;i<librarain_data.size();i++) { 
+                            			 if(delete_lib.equals(librarain_data.get(i).name)){
+                            				 librarain_data.removeIf(e->e.equals(delete_lib)); //사서에 대한 정보 삭제
                             				 System.out.println(delete_lib+"(의) 사서 정보를 삭제합니다");
-                            				 librarian_db.remove(i); //사서에 대한 정보 삭제
                             			 } //조건문 -> 사서 정보 찾기
                             		 }
                             		 while(true) {
@@ -359,9 +491,9 @@ public class mainMenu {
 		                                    	System.out.println("\n---찾는 사서 이름을 입력하세요---- ");
 		                                     	System.out.print("사서 이름 : ");
 		                                     	String lib_find = person.next();
-		                                     	 for(int i=0;i<librarian_db.size();i++) { 
-		                                			 if(lib_find.equals(librarian_db.get(i).Person_name)){
-		                                				 librarian lib_data = librarian_db.get(i);
+		                                     	 for(int i=0;i<librarain_data.size();i++) { 
+		                                			 if(lib_find.equals(librarain_data.get(i).name)){
+		                                				 librarian lib_data = librarain_data.get(i);
 		                                				 while(true) {
 			            		                				System.out.println("\n\n");
 			            		                				lib_data.print_information();
@@ -374,9 +506,9 @@ public class mainMenu {
 		                                        }
 		                                     }// 사서 찾기 if 문
 		                                     if(menu_choice == 2) { //전체 사서 목록 보기
-		                                    	 for(int i=0;i<librarian_db.size();i++) { 
+		                                    	 for(int i=0;i<librarain_data.size();i++) { 
 		                                    		 System.out.println("\n\n");
-		                                    		 librarian_db.get(i).print_information();
+		                                    		 librarain_data.get(i).print_information();
 		                                    	 }
 		                                    	 while(true) {
 		             		                		System.out.println("\n 1. 뒤로가기 ");
@@ -408,7 +540,7 @@ public class mainMenu {
                                 	 break;
                                  if(menu_choice == 1) {//책 추가
                                 	 if(menu_choice == 1) {
-                                		 lib.set_bookDB(book_db);
+                                		 lib.set_bookDB(bookdb_data);
                                     	 System.out.println("\n\n 1. 뒤로가기 ");
         		                			menu_choice =takeInput(0,2);
         		                			if(menu_choice == 1)
@@ -418,9 +550,10 @@ public class mainMenu {
                                  if(menu_choice == 2) { //책 삭제
                             		 System.out.println("삭제하고자 하는 책의 제목을 입력하세요: ");
                             		 String delete_book = book_m.next();
-                            		 for(int i=0;i<book_db.size();i++) { 
-                            			 if(delete_book.equals(book_db.get(i).title)){
-                            				 book_db.remove(i); //책에 대한 정보 삭제
+                            		 for(int i=0;i<bookdb_data.size();i++) { 
+                            			 if(delete_book.equals(bookdb_data.get(i).title)){
+                            				 //bookdb_data.remove(i); //책에 대한 정보 삭제
+                            				 bookdb_data.removeIf(e ->e.equals(delete_book));
                             				 System.out.println(delete_book+"(의) 책 정보를 삭제합니다");
                             			 }
                             		 } 
@@ -434,8 +567,8 @@ public class mainMenu {
                                  
            		                if(menu_choice == 3) {//책 정보 보기 
            		                	
-           		                	for(int j=0;j<book_db.size();j++) {
-		                				book book_data = book_db.get(j);
+           		                	for(int j=0;j<bookdb_data.size();j++) {
+		                				book book_data = bookdb_data.get(j);
 		                				System.out.println("\n-------------------------");
     		                			book_data.show_bookinformation();
            		                	}
@@ -459,3 +592,25 @@ public class mainMenu {
 		 } //전체 loop 문 
 	 } // main 함수 
 } //전체 괄호
+
+
+/**
+ * @author ersudo
+ * @description  - not used function
+	public String toCsvRow() {
+		return Stream.of(Person_name, Person_email,Person_address,Person_phonenumber,userID,userPW,history)
+				.map(value ->value.replaceAll("\"","\"\""))
+				.map(value -> Stream.of("\"", ",").anyMatch(value::contains) ? "\"" + value + "\"" : value)
+	            .collect(Collectors.joining(","));
+	}
+	public String getCSV() {
+		String recordasCSV  = usersDB.stream()
+				.map(users::toCsvRow)
+				.collect(Collectors.joining(System.getProperty("line.separator")));
+		return recordasCSV;
+	}
+	public ArrayList<users> getuserDB(){
+		return usersDB;
+	}
+ *	
+ **/

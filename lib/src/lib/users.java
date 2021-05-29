@@ -1,14 +1,18 @@
 package lib;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.stream.*;
+import com.opencsv.*;
 
 public class users extends Person { 
 	protected String userID;// 아이디 
 	protected String userPW;// 비밀번호 	
 	protected String history; // 대출 예약 기록 
-	
 	public users() {
 		super();
 		this.userID = "";
 		this.userPW = "";
+		this.history= "";
 	}
 	
 	public users(String name,String email,String address,String phone,String id,String pw) {
@@ -26,11 +30,14 @@ public class users extends Person {
 	public void set_userhistory() {
 		this.history = "없음";
 	}
-	public String get_userID() {
+	public String getUserID() {
 		return userID;
 	}
-	public String get_userPW() {
+	public String getUserPW() {
 		return userPW;
+	}
+	public String getUsershistory() {
+		return history;
 	}
 	public void print_information() {
 		super.print_user_information();
@@ -39,5 +46,4 @@ public class users extends Person {
 		System.out.println("대출기록: "+history);
 		System.out.println("-------------------------------");
 	}
-
 }
