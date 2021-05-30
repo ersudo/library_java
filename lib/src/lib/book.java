@@ -5,28 +5,40 @@ import java.util.*;
  * get and set book info and show basic book information
  * 
  * @author ersudo
- * @abstract class book_info
- * @param ISBN   
- * @param subject 
- * @param language 
- * @param publisher
- * @param publicationdate
- *  
+ * @abstract class book_info 
  * 
  **/
 abstract class book_info{ 
-	protected String ISBN;                    //고유 번호 * book isbn
+	protected String ISBN;                    //고유 번호 * book isbn 
 	protected String subject;                 // 책 주제 * book title->subject
 	protected String language;                // 언어 * book language ->language
 	protected String publisher;               // 저자 * book author ->publisher
-	protected String publicationdate;         //출판일 * book publication date 
-	public book_info() {                      //default setting book info
+	protected String publicationdate;         //출판일 * book publication date
+	
+	/**
+	 * @author ersudo
+	 * this is constructor without any parameter 
+	 * set default information of book_information
+	 **/
+	public book_info() {                      
 		this.ISBN = " "; 
 		this.subject = " ";
 		this.language = " ";
 		this.publisher = " "; 
 		this.publicationdate =" ";
 	}
+	/**
+	 *@author ersudo
+	 * this is constructor with parameter
+	 * set information of book_information
+	 * 
+	 * @param ISBN  set the book isbn
+	 * @param suject set the book subject 
+	 * @param language set the book langugage
+	 * @param publisher set the publisher 
+	 * @param publicationdate set the publication date
+	 * 
+	 **/
 	public book_info(String ISBN, String subject,String language, String publisher,String publicationdate) { //set book info
 		this.ISBN = ISBN;
 		this.subject = subject;
