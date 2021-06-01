@@ -16,9 +16,11 @@ abstract class book_info{
 	protected String publicationdate;         //출판일 * book publication date
 	
 	/**
-	 * @author ersudo
 	 * this is constructor without any parameter 
 	 * set default information of book_information
+	 * 
+	 * @author ersudo
+	 * 
 	 **/
 	public book_info() {                      
 		this.ISBN = " "; 
@@ -39,14 +41,19 @@ abstract class book_info{
 	 * @param publicationdate set the publication date
 	 * 
 	 **/
-	public book_info(String ISBN, String subject,String language, String publisher,String publicationdate) { //set book info
+	public book_info(String ISBN, String subject,String language, String publisher,String publicationate) {
 		this.ISBN = ISBN;
 		this.subject = subject;
 		this.language = language;
 		this.publisher =publisher; 
 		this.publicationdate =publicationdate;
 	}
-	/*------------------get 함수 ------------*/  //get function 
+	/**
+	 * @author ersudo
+	 * 
+	 * get function , get values
+	 * 
+	 **/ 
 	public String getISBN() {
 		return ISBN;
 	}
@@ -62,7 +69,11 @@ abstract class book_info{
 	public String getPublicationdate() {
 		return publicationdate;
 	}
-	/*------------------set 함수 ------------*/ //set function
+	/**
+	 * @author ersudo
+	 * 
+	 * set function , set values
+	 **/
 	public void set_ISBN(String ISBN) {
 		this.ISBN = ISBN;
 	}
@@ -78,15 +89,22 @@ abstract class book_info{
 	public void set_publication_date(String publicationdate) {
 		this.publicationdate =publicationdate;
 	}
-	
+	/**
+	 * @author ersudo
+	 *  
+	 * show the information of book.
+	 * we want to get the information about book ,and this is basic information 
+	 * will be extends in book _info class 
+	 * 
+	 **/
 	
 	
 	public void show_bookinformation() {
-		System.out.println("고유번호(ISBN): "+ISBN);
-		System.out.println("책 주제:"+ subject);
-		System.out.println("책 언어:" + language);
-		System.out.println("책 저자: "+ publisher);
-		System.out.println("책 출판일: "+ publicationdate);
+		System.out.println("고유번호(ISBN): "+ISBN);                // print book ISBN
+		System.out.println("책 주제:"+ subject);                   // print book subject
+		System.out.println("책 언어:" + language);				 // print book language
+		System.out.println("책 저자: "+ publisher);                // print book publisher
+		System.out.println("책 출판일: "+ publicationdate);        //  print book publication 
 	}
 }
 public class book extends book_info{ //책에 대한 정보 (책의 서브 클래스)
