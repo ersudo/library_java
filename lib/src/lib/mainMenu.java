@@ -154,7 +154,46 @@ public class mainMenu {
 		    }
 	 }
 	 /*------------------------librarian db를 csv 파일로 성공적으로 변환 -----------------------------*/
+ /*--------------------------------user db 읽기 -----------------*/
 	 
+	 public static void readCSVFileusers(String csvFileName) {
+		 ICsvBeanReader beanReader = null;
+		    CellProcessor[] processors = new CellProcessor[] {
+		            new NotNull(), // name
+		            new NotNull(), // email
+		            new NotNull(), // address
+		            new NotNull(), // phone
+		            new NotNull(),// id
+		            new NotNull() // pw
+		    };
+		    try {
+		    	beanReader = new CsvBeanReader(new FileReader(csvFileName),
+		    			CsvPreference.STANDARD_PREFERENCE);
+		    	 String[] header = beanReader.getHeader(true);
+		    	 users userBean = null;
+		    	 while((userBean = beanReader.read(users.class, header, processors)) != null) {
+		    		 System.out.printf("%15s %30s %30s %10s %10s %10s",
+		    				 userBean.getName(), userBean.getEmail(),
+		    				 userBean.getAddress(), userBean.getPhone(),
+		    				 userBean.getUserID(), userBean.getUserPW());
+		    		 System.out.println();
+		    	 }
+		    }
+		    catch (FileNotFoundException ex) {
+		        System.err.println("Could not find the CSV file: " + ex);
+		    } catch (IOException ex) {
+		        System.err.println("Error reading the CSV file: " + ex);
+		    } finally {
+		        if (beanReader != null) {
+		            try {
+		                beanReader.close();
+		            } catch (IOException ex) {
+		                System.err.println("Error closing the reader: " + ex);
+		            }
+		        }
+		    }
+	 }
+	 /*--------------------------------user db 읽기  성공 -> 출력대신 다른걸 시도  -----------------*/
 	 public static void main(String[] args) {
 		 Scanner person = new Scanner(System.in);
 		 Scanner press_button = new Scanner(System.in);
@@ -360,6 +399,7 @@ public class mainMenu {
                                 	 break;
                                  if(menu_choice == 1) { // 회원추가
                                 	lib.set_userDB(userdb_data); //회원추가 library에서 담당
+                                	writeCSVFileusers(csvFileNameuserDB,userdb_data);
                                 	System.out.println("\n\n 1. 뒤로가기 ");
    		                			menu_choice =takeInput(0,2);
    		                			if(menu_choice == 1)
@@ -452,6 +492,7 @@ public class mainMenu {
                                 	 break;
                                  if(menu_choice == 1) {//사서 추가
           		                	 lib.set_librarianDB(librarain_data);
+          		                	 writeCSVFilelibrarian(csvFileNameLibrarianDB,librarain_data);
                                 	 System.out.println("\n\n 1. 뒤로가기 ");
     		                			menu_choice =takeInput(0,2);
     		                			if(menu_choice == 1)
@@ -541,6 +582,7 @@ public class mainMenu {
                                  if(menu_choice == 1) {//책 추가
                                 	 if(menu_choice == 1) {
                                 		 lib.set_bookDB(bookdb_data);
+                                		 writeCSVFilebook(csvFileNamebookDB,bookdb_data);  // book add
                                     	 System.out.println("\n\n 1. 뒤로가기 ");
         		                			menu_choice =takeInput(0,2);
         		                			if(menu_choice == 1)
