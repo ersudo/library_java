@@ -8,3 +8,5 @@ Documents
 - this project is making library system. base on java. 
 - first it will write down in korean ,and i will make some translation in code and description (class diagram)
 
+도서관 시스템 구현 프로그램입니다.
+
